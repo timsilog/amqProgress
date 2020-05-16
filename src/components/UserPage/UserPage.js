@@ -4,7 +4,7 @@ import ProgressItem from '../ProgressItem/ProgressItem';
 import VideoPlayer from '../VideoPlayer/VideoPlayer';
 import './UserPage.scss'
 
-const url = `https://serene-temple-88689.herokuapp.com/progress`
+const url = process.env.API_URL_PROGRESS
 
 const UserPage = ({ match }) => {
   const [progress, setProgress] = useState([]);
