@@ -1,15 +1,22 @@
 import React, { useState, useEffect } from 'react';
+import { withRouter, useHistory } from 'react-router-dom';
 import ProgressItem from '../ProgressItem/ProgressItem';
 import VideoPlayer from '../VideoPlayer/VideoPlayer';
 import './UserPage.scss'
 
-const url = 'http://localhost:4000/progress'
+const url = PROCESS.env.API_URL_PROGRESS
 
 const UserPage = ({ match }) => {
   const [progress, setProgress] = useState([]);
   const [currentDisplay, setCurrentDisplay] = useState({});
-  console.log('asdasdaj')
+  const history = useHistory();
+
   useEffect(() => {
+    const unlisten = history.listen((location, action) => {
+      if (action === 'PUSH') {
+        setProgress([]);
+      }
+    })
     const getProgress = async () => {
       let response = await fetch(`${url}?username=${match.params.username}`);
       let currentProgress = (await response.json()).progress;
@@ -27,10 +34,12 @@ const UserPage = ({ match }) => {
       }
     }
     getProgress();
-  }, [match]);
+    return () => {
+      unlisten();
+    }
+  }, [match, history]);
 
   const handleClick = (i) => {
-    console.log(`clicked ${i}`);
     setCurrentDisplay(progress[i]);
   }
 
@@ -55,4 +64,4 @@ const UserPage = ({ match }) => {
   )
 }
 
-export default UserPage;
+export default withRouter(UserPage);

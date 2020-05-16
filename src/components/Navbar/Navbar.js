@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
 import './Navbar.scss';
-import { useHistory } from 'react-router-dom';
+import { useHistory, withRouter } from 'react-router-dom';
 
 const Navbar = () => {
   const [searchText, setSearchText] = useState('');
   const history = useHistory();
-  console.log(history);
 
   const submit = e => {
-    // e.preventDefault();
-    history.push(`/amqprogress/${searchText}`);
+    history.push(`/${searchText}`);
   }
 
   return (
@@ -24,4 +22,4 @@ const Navbar = () => {
   )
 }
 
-export default Navbar;
+export default withRouter(Navbar);
