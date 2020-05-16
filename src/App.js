@@ -4,7 +4,6 @@ import UserPage from './components/UserPage/UserPage';
 import Navbar from './components/Navbar/Navbar';
 import './App.scss';
 
-// test
 const App = () => {
   return (
     <div>

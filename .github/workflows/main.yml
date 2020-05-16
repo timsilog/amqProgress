@@ -34,7 +34,4 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         BRANCH: gh-pages
         FOLDER: build
-    
-    - name: Test
-      run: |
-        cat 'hello world'
+
