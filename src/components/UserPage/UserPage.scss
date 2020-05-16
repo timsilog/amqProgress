@@ -1,0 +1,15 @@
+#user-page {
+  margin-top: 2%;
+}
+
+.songs-container {
+  display: flex;
+}
+
+.progress-item-list-container {
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+  // border-right: 1px solid rgba(1,1,1,.5)
+  padding: 2%;
+}
