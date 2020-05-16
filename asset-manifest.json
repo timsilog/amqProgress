@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/amqprogress/static/css/main.5126dc8a.chunk.css",
-    "main.js": "/amqprogress/static/js/main.3eedc7a7.chunk.js",
-    "main.js.map": "/amqprogress/static/js/main.3eedc7a7.chunk.js.map",
+    "main.js": "/amqprogress/static/js/main.e8c632f2.chunk.js",
+    "main.js.map": "/amqprogress/static/js/main.e8c632f2.chunk.js.map",
     "runtime-main.js": "/amqprogress/static/js/runtime-main.0dba26c5.js",
     "runtime-main.js.map": "/amqprogress/static/js/runtime-main.0dba26c5.js.map",
     "static/js/2.5683ae0b.chunk.js": "/amqprogress/static/js/2.5683ae0b.chunk.js",
     "static/js/2.5683ae0b.chunk.js.map": "/amqprogress/static/js/2.5683ae0b.chunk.js.map",
     "index.html": "/amqprogress/index.html",
-    "precache-manifest.895cefd8e9d7c61140de69ddd5683463.js": "/amqprogress/precache-manifest.895cefd8e9d7c61140de69ddd5683463.js",
+    "precache-manifest.590178763f8d16c0a3c50935977599d4.js": "/amqprogress/precache-manifest.590178763f8d16c0a3c50935977599d4.js",
     "service-worker.js": "/amqprogress/service-worker.js",
     "static/css/main.5126dc8a.chunk.css.map": "/amqprogress/static/css/main.5126dc8a.chunk.css.map",
     "static/js/2.5683ae0b.chunk.js.LICENSE.txt": "/amqprogress/static/js/2.5683ae0b.chunk.js.LICENSE.txt"
@@ -17,6 +17,6 @@
     "static/js/runtime-main.0dba26c5.js",
     "static/js/2.5683ae0b.chunk.js",
     "static/css/main.5126dc8a.chunk.css",
-    "static/js/main.3eedc7a7.chunk.js"
+    "static/js/main.e8c632f2.chunk.js"
   ]
 }
