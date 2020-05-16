@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "d24ec6ddf602e8d90fad3bc996ba5ba6",
+    "revision": "35146edf79e4264da6e467d43186c4f7",
     "url": "/amqprogress/index.html"
   },
   {
-    "revision": "79257317b3a711866f48",
+    "revision": "0ac0ae42074e1ccdb56e",
     "url": "/amqprogress/static/css/main.5126dc8a.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/amqprogress/static/js/2.ec5d649a.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "79257317b3a711866f48",
-    "url": "/amqprogress/static/js/main.7d350167.chunk.js"
+    "revision": "0ac0ae42074e1ccdb56e",
+    "url": "/amqprogress/static/js/main.1e91efa5.chunk.js"
   },
   {
     "revision": "3a555b169cc5efbc1179",
