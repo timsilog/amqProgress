@@ -28,14 +28,15 @@ import './ProgressItem.scss'
 const ProgressItem = (props) => {
   return (
     <div className='progress-item-container' onClick={props.onClick}>
-      <div></div>
+      {/* <div></div> */}
       <div className='song-name'>{props.item.songId.songName}</div>
       {/* <div className='anime-container'> */}
+      <div>{props.item.songId.songArtist}</div>
       <div>{props.item.songId.anime.english}</div>
       {/* <div>{props.item.songId.anime.romaji}</div> */}
       {/* <div>{props.item.songId.anime.native}</div> */}
       {/* </div> */}
-      <div className='song-type'>{props.item.songId.songType}</div>
+      {/* <div className='song-type'>{shortenType(props.item.songId.songType)}</div> */}
       <div className='accuracy'>{`${props.item.hits}/${props.item.hits + props.item.misses}`}</div>
     </div>
   )

@@ -7,9 +7,51 @@
 }
 
 .progress-item-list-container {
+  margin-left: 2%;
   display: flex;
   flex-direction: column;
   width: 60%;
-  // border-right: 1px solid rgba(1,1,1,.5)
-  padding: 2%;
+  #list-header {
+    padding: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr .2fr;
+    color: rgb(160, 160, 160);
+    div:nth-child(4) {
+      justify-self: center
+    }
+  } 
+}
+
+#right-fixed {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 38%;
+  height: 100vh;
+  position: fixed;
+  right: 0;
+  top: 0;
+  #filter {
+    font-size: 1em;
+    padding-top: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 50%;
+    height: 30%;
+    max-width: 250px;
+    max-height: 220px;
+    border-radius: 15px;
+    border: 1px solid gray;
+    .line {
+      margin: 10px;
+      border-bottom: 1px solid gray;
+      width: 90%;
+    }
+    label {
+      width: 70%;
+      display: flex;
+    }
+  }
 }

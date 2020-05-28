@@ -1,15 +1,28 @@
 #videoplayer {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  // align-items: center;
   justify-content: center;
-  position: fixed;
-  width: 38%;
-  height: 100vh;
-  right: 0;
-  top: 0;
+  width: 100%;
   video {
+    align-self: center;
     max-width: 95%;
     height: auto;
+  }
+  #video-info {
+    font-size: .8em;
+    margin-left: 3%;
+    margin-right: 3%;
+    #video-sub-info {
+      display: flex;
+      justify-content: space-between;
+      div:nth-child(2) {
+        max-width: 40%;
+      }
+    }
+  }
+  h3 {
+    margin-top: 1%;
+    margin-bottom: 3%;
   }
 }

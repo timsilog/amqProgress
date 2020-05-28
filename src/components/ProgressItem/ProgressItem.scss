@@ -1,7 +1,10 @@
 .progress-item-container {
   display: grid;
-  grid-template-columns: .2fr 1fr 1fr .5fr .3fr;
+  grid-template-columns: 1fr 1fr 1fr .2fr;
   border-top: 1px solid rgba(1,1,1,.5);
-  padding-top: 10px;
-  padding-bottom: 10px;
+  padding: 10px;
+  column-gap: 1%;
+  .accuracy {
+    justify-self: center;
+  }
 }

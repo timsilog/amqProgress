@@ -11,7 +11,7 @@ const App = () => {
         <Navbar />
         <Switch>
           <Route path='/' exact render={() => <div>Home page</div>} />
-          <Route path='/:username' component={UserPage} />
+          <Route path='/:username' render={props => <UserPage key={props.match.params.username}></UserPage>} />
         </Switch>
       </Router>
     </div>
