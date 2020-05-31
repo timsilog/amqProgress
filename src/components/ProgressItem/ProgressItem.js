@@ -2,41 +2,47 @@ import React from 'react';
 import './ProgressItem.scss'
 
 /* SAMPLE PROPS
+{
   item: {
-    "correctGuesses":["Steins;Gate 0"],
-    "incorrectGuesses":[],
-    "_id":"5ebb9917e6cbfb897766ef5b",
-    "userId":"5ebb943a5366b187adf66118",
-    "songId":{
-      "anime":{
-        "english":"Steins;Gate",
-        "romaji":"Steins;Gate",
-        "native":"シュタインズ・ゲート"
-      },
-      "songLink":["https://files.catbox.moe/akg1vv.webm"],
-      "_id":"5ebb9917e6cbfb897766ef5a",
-      "songName":"Sky Clad no Kansokusha",
-      "songType":"Ending 2",
-      "__v":0
-    },
-    "hits":1,
-    "misses":0,
-    "__v":0
-  }
+    "_id": "5ec96becffc2540017cc83b1",
+    "correctGuesses": [],
+    "incorrectGuesses": [
+      "Tantei Opera Milky Holmes"
+    ],
+    "lastSeen": 1590258668274,
+    "userId": "5ec425e323de9500176c814e",
+    "songId": "5ec96becffc2540017cc83af",
+    "hits": 0,
+    "misses": 1,
+    "__v": 0,
+    "song": [
+      {
+        "_id": "5ec96becffc2540017cc83af",
+        "songLink": [
+          "https://files.catbox.moe/u1szbl.mp3"
+        ],
+        "uid": "dc1566a4bc7ea295fa5ae9c0e3d2398f6f9021ef",
+        "songName": "Buddy Buddy Fight!",
+        "anime": {
+          "english": null,
+          "romaji": "Future Card Buddyfight",
+          "native": "フューチャーカード バディファイト"
+        },
+        "songArtist": "Sora Tokui",
+        "songType": "Ending 1",
+        "__v": 3
+      }
+    ]
+  },
+}
 */
 
 const ProgressItem = (props) => {
   return (
     <div className='progress-item-container' onClick={props.onClick}>
-      {/* <div></div> */}
-      <div className='song-name'>{props.item.songId.songName}</div>
-      {/* <div className='anime-container'> */}
-      <div>{props.item.songId.songArtist}</div>
-      <div>{props.item.songId.anime.english}</div>
-      {/* <div>{props.item.songId.anime.romaji}</div> */}
-      {/* <div>{props.item.songId.anime.native}</div> */}
-      {/* </div> */}
-      {/* <div className='song-type'>{shortenType(props.item.songId.songType)}</div> */}
+      <div className='song-name'>{props.item.song[0].songName}</div>
+      <div>{props.item.song[0].songArtist}</div>
+      <div>{props.item.song[0].anime.english}</div>
       <div className='accuracy'>{`${props.item.hits}/${props.item.hits + props.item.misses}`}</div>
     </div>
   )

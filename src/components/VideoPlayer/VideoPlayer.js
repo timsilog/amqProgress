@@ -11,22 +11,20 @@ const VideoPlayer = (props) => {
       ?
       <div id='videoplayer'>
         <video controls key={props.src._id}>
-          {props.src.songId.songLink.map((src, i) => <source src={src} key={i}></source>)}
+          {props.src.songLink.map((src, i) => <source src={src} key={i}></source>)}
           No video
         </video>
         <div id="video-info">
-          <h3>{props.src.songId.songName}</h3>
+          <h3>{props.src.songName}</h3>
           <div id="video-sub-info">
-            <div>{props.src.songId.songArtist}</div>
-            <div>{`${props.src.songId.anime.english} [${shortenType(props.src.songId.songType)}]`}</div>
+            <div>{props.src.songArtist}</div>
+            <div>{`${props.src.anime.english ? props.src.anime.english : props.src.anime.romaji} [${shortenType(props.src.songType)}]`}</div>
           </div>
         </div>
       </div>
       : <video controls>
         No Video
       </video>
-
-
   )
 }
 
