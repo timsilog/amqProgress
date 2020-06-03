@@ -4,8 +4,13 @@
   // align-items: center;
   justify-content: center;
   width: 100%;
+  .audio {
+    width: 95%;
+    height: 3em;
+  }
   video {
     align-self: center;
+    width: 95%;
     max-width: 95%;
     height: auto;
   }
