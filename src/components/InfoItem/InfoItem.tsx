@@ -1,6 +1,4 @@
 import React from 'react';
-import './ProgressItem.scss'
-import playBtn from './play.png';
 
 /* SAMPLE PROPS
 {
@@ -38,32 +36,12 @@ import playBtn from './play.png';
 }
 */
 
-const ProgressItem = (props) => {
-  const getAnimeTitle = anime => {
-    if (props.isEnglish) {
-      return anime.english
-        ? anime.english
-        : anime.romaji
-          ? anime.romaji
-          : anime.native;
-    } else {
-      return anime.romaji
-        ? anime.romaji
-        : anime.english
-          ? anime.english
-          : anime.native;
-    }
-  }
-
+const InfoItem = props => {
   return (
-    <div className='progress-item-container' >
-      <div className='song-name'>{props.item.song[0].songName}</div>
-      <div>{props.item.song[0].songArtist}</div>
-      <div>{getAnimeTitle(props.item.song[0].anime)}</div>
-      <div className='accuracy'>{`${props.item.hits}/${props.item.hits + props.item.misses}`}</div>
-      <img src={playBtn} className='play-button' alt='play' onClick={props.onClick} />
+    <div id='info-item-container'>
+      <div>{props.src.incorrectGuesses.join(', ')}</div>
     </div>
   )
 }
 
-export default ProgressItem;
+export default InfoItem;

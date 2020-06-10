@@ -6,7 +6,7 @@ const Navbar = () => {
   const [searchText, setSearchText] = useState('');
   const history = useHistory();
 
-  const submit = e => {
+  const submit = () => {
     history.push(`/${searchText}`);
   }
 
@@ -14,9 +14,10 @@ const Navbar = () => {
     <nav id='navbar'>
       Search for user:
       <form
-        onChange={e => setSearchText(e.target.value)}
         onSubmit={submit}>
-        <input type='text' />
+        <input type='text'
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchText(e.target.value)}
+        />
       </form>
     </nav>
   )

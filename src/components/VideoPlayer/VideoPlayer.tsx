@@ -1,18 +1,23 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Song } from '../../types';
 import './VideoPlayer.scss';
 
-const shortenType = (type) => {
+type VideoProps = {
+  src: Song | null
+}
+
+const shortenType = (type: string) => {
   return type.replace('Opening', 'OP').replace('Ending', 'ED').replace('Insert Song', 'IN');
 }
 
-const VideoPlayer = (props) => {
+const VideoPlayer = (props: VideoProps) => {
   // const [srcs, setSrcs] = useState(null);
-  const [current, setCurrent] = useState(null);
-  const vidRef = useRef();
+  const [current, setCurrent] = useState<string | null>(null);
+  const vidRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     // setSrcs(props.src.songLink);
-    if (props.src.songLink.length) {
+    if (props.src && props.src.songLink.length) {
       setCurrent(props.src.songLink[0]);
     }
   }, [props.src]);
@@ -27,11 +32,11 @@ const VideoPlayer = (props) => {
           className={current && current.includes('.mp3') ? 'audio' : ''}
           ref={vidRef}
         >
-          <source src={current}></source>
+          <source src={current ? current : ''}></source>
           No video
         </video>
         <div id="video-info">
-          <h3>{props.src.songName}</h3>
+          <h2>{props.src.songName}</h2>
           <div id="video-sub-info">
             <div>{props.src.songArtist}</div>
             <div>{`${props.src.anime.english ? props.src.anime.english : props.src.anime.romaji} [${shortenType(props.src.songType)}]`}</div>
