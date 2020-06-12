@@ -8,7 +8,7 @@ export interface Progress {
   hits: number,
   misses: number,
   __v: number,
-  songs: Array<Song>,
+  song: Array<Song>,
 }
 
 export interface Song {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ReactComponentElement } from 'react';
+import React, { useState, useEffect } from 'react';
 import { withRouter, useHistory, RouteComponentProps } from 'react-router-dom';
 import ProgressItem from '../ProgressItem/ProgressItem';
 import VideoPlayer from '../VideoPlayer/VideoPlayer';
@@ -6,7 +6,7 @@ import InfoItem from '../InfoItem/InfoItem';
 import Loader from 'react-loader-spinner';
 import Toggle from 'react-toggle';
 import sortSongs from './sortFunctions';
-import { Progress, Song } from '../../types';
+import { Progress } from '../../types';
 import './UserPage.scss';
 import './react-toggle.scss';
 
@@ -27,7 +27,7 @@ const UserPage = ({ match }: RouteComponentProps<MatchParams>) => {
   const [sortFun, setSortFun] = useState(1);
   const [isEnglish, setIsEnglish] = useState(true);
   const [isReversed, setIsReversed] = useState(false);
-  const [currentTab, setCurrentTab] = useState('filter');
+  const [currentTab, setCurrentTab] = useState<'filter' | 'info' | 'queue'>('filter');
   const history = useHistory();
 
   useEffect(() => {
@@ -75,6 +75,7 @@ const UserPage = ({ match }: RouteComponentProps<MatchParams>) => {
 
   const handleCurrentInfo = (i: number) => {
     setCurrentInfo(progress[i]);
+    setCurrentTab('info');
   }
 
   const handleLanguageToggle = () => {
@@ -121,15 +122,15 @@ const UserPage = ({ match }: RouteComponentProps<MatchParams>) => {
             />)}
           </div>
           <div id='right-fixed'>
-            <VideoPlayer src={currentDisplay ? currentDisplay.songs[0] : null} />
+            <VideoPlayer src={currentDisplay ? currentDisplay.song[0] : null} />
             <br />
             <div id='toolbox'>
               <div id='toolbox-content'>
                 {
                   currentTab === 'info' ?
-                    <InfoItem src={currentInfo ? currentInfo : {}} />
+                    <InfoItem src={currentInfo ? currentInfo : null} />
                     : currentTab === 'queue' ?
-                      <div>queue</div>
+                      <div>Coming Soon</div>
                       :
                       <div id='filter'>
                         {loadingState === 'loaded'

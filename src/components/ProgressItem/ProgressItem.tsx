@@ -37,9 +37,9 @@ const ProgressItem = (props: ProgressItemProps) => {
 
   return (
     <div className={`progress-item-container`} onClick={props.onClick}>
-      <div className='song-name'>{props.item.songs[0].songName}</div>
-      <div>{props.item.songs[0].songArtist}</div>
-      <div>{getAnimeTitle(props.item.songs[0].anime)}</div>
+      <div className='song-name'>{props.item.song[0].songName}</div>
+      <div>{props.item.song[0].songArtist}</div>
+      <div>{getAnimeTitle(props.item.song[0].anime)}</div>
       <div className='accuracy'>{`${props.item.hits}/${props.item.hits + props.item.misses}`}</div>
       <img src={playBtn} className='play-button' alt='play' onClick={props.onClickPlay} />
     </div>

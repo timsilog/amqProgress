@@ -21,7 +21,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr 1fr .2fr .2fr;
     column-gap: 1%;
-    color: rgb(160, 160, 160);
+    color: $gray;
     div:nth-child(4) {
       justify-self: center;
     }

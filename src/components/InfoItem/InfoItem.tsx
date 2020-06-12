@@ -1,45 +1,43 @@
 import React from 'react';
+import { Progress } from '../../types';
+import './InfoItem.scss';
 
-/* SAMPLE PROPS
-{
-  item: {
-    "_id": "5ec96becffc2540017cc83b1",
-    "correctGuesses": [],
-    "incorrectGuesses": [
-      "Tantei Opera Milky Holmes"
-    ],
-    "lastSeen": 1590258668274,
-    "userId": "5ec425e323de9500176c814e",
-    "songId": "5ec96becffc2540017cc83af",
-    "hits": 0,
-    "misses": 1,
-    "__v": 0,
-    "song": [
-      {
-        "_id": "5ec96becffc2540017cc83af",
-        "songLink": [
-          "https://files.catbox.moe/u1szbl.mp3"
-        ],
-        "uid": "dc1566a4bc7ea295fa5ae9c0e3d2398f6f9021ef",
-        "songName": "Buddy Buddy Fight!",
-        "anime": {
-          "english": null,
-          "romaji": "Future Card Buddyfight",
-          "native": "フューチャーカード バディファイト"
-        },
-        "songArtist": "Sora Tokui",
-        "songType": "Ending 1",
-        "__v": 3
-      }
-    ]
-  },
+type InfoItemProps = {
+  src: Progress | null,
 }
-*/
 
-const InfoItem = props => {
+const InfoItem = (props: InfoItemProps) => {
+  if (!props.src) {
+    return <div></div>
+  }
   return (
     <div id='info-item-container'>
-      <div>{props.src.incorrectGuesses.join(', ')}</div>
+      <div className='info-grid'>
+        <div className='gray'>Title:</div>
+        <div>{props.src.song[0].songName}</div>
+        <div className='gray'>Artist:</div>
+        <div>{props.src.song[0].songArtist}</div>
+        <div className='gray'>Type:</div>
+        <div>{props.src.song[0].songType}</div>
+      </div>
+      <div className='gray'>Anime:</div>
+      <div className='info-grid smaller-indented'>
+        <div className='gray'>English:</div>
+        <div>{props.src.song[0].anime.english}</div>
+        <div className='gray'>Romaji:</div>
+        <div>{props.src.song[0].anime.romaji}</div>
+        <div className='gray'>Native:</div>
+        <div>{props.src.song[0].anime.native}</div>
+      </div>
+      <div className='gray'>Incorrect Guesses:</div>
+      <div className='smaller-indented'>
+        {props.src.incorrectGuesses.map(str => <div>{str}</div>)}
+      </div>
+      <br />
+      <div className='gray'>Correct Guesses</div>
+      <div className='smaller-indented'>
+        {props.src.correctGuesses.map(str => <div>{str}</div>)}
+      </div>
     </div>
   )
 }
