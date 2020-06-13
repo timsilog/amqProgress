@@ -31,12 +31,12 @@ const InfoItem = (props: InfoItemProps) => {
       </div>
       <div className='gray'>Incorrect Guesses:</div>
       <div className='smaller-indented'>
-        {props.src.incorrectGuesses.map(str => <div>{str}</div>)}
+        {props.src.incorrectGuessesOld.map(str => <div key={str}>{str}</div>)}
       </div>
       <br />
       <div className='gray'>Correct Guesses</div>
       <div className='smaller-indented'>
-        {props.src.correctGuesses.map(str => <div>{str}</div>)}
+        {props.src.correctGuessesOld.map(str => <div key={str}>{str}</div>)}
       </div>
     </div>
   )

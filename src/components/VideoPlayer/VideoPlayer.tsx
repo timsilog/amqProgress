@@ -3,7 +3,8 @@ import { Song } from '../../types';
 import './VideoPlayer.scss';
 
 type VideoProps = {
-  src: Song | null
+  src: Song | null,
+  auto: boolean
 }
 
 const shortenType = (type: string) => {
@@ -31,6 +32,7 @@ const VideoPlayer = (props: VideoProps) => {
           key={props.src._id}
           className={current && current.includes('.mp3') ? 'audio' : ''}
           ref={vidRef}
+          autoPlay={props.auto}
         >
           <source src={current ? current : ''}></source>
           No video

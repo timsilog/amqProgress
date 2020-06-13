@@ -1,14 +1,20 @@
 export interface Progress {
   _id: string,
-  correctGuesses: Array<string>,
-  incorrectGuesses: Array<string>,
+  correctGuesses: {
+    [key: string]: number,
+  },
+  incorrectGuesses: {
+    [key: string]: number,
+  },
+  correctGuessesOld: string[],
+  incorrectGuessesOld: string[],
   lastSeen: number,
   userId: string,
   songId: string,
   hits: number,
   misses: number,
   __v: number,
-  song: Array<Song>,
+  song: Song[],
 }
 
 export interface Song {

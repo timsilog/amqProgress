@@ -17,17 +17,28 @@ type MatchParams = {
   username: string
 }
 
+type SearchType =
+  'title' |
+  'artist' |
+  'eng' |
+  'rom' |
+  'hits' |
+  'miss' |
+  'seen';
+
 const UserPage = ({ match }: RouteComponentProps<MatchParams>) => {
   const [numSongs, setNumSongs] = useState(0);
   const [user, setUser] = useState<string>('');
   const [progress, setProgress] = useState<Progress[]>([]);
-  const [currentDisplay, setCurrentDisplay] = useState<Progress | null>(null);
+  const [currentDisplay, setCurrentDisplay] = useState<{ progress: Progress, auto: boolean } | null>(null);
   const [currentInfo, setCurrentInfo] = useState<Progress | null>(null);
   const [loadingState, setLoadingState] = useState('unloaded');
   const [sortFun, setSortFun] = useState(1);
   const [isEnglish, setIsEnglish] = useState(true);
   const [isReversed, setIsReversed] = useState(false);
   const [currentTab, setCurrentTab] = useState<'filter' | 'info' | 'queue'>('filter');
+  const [searchBy, setSearchBy] = useState<SearchType>('artist');
+  const [search, setSearch] = useState('');
   const history = useHistory();
 
   useEffect(() => {
@@ -43,7 +54,7 @@ const UserPage = ({ match }: RouteComponentProps<MatchParams>) => {
       if (!currentProgress || !currentProgress.paginatedResults.length) {
         return;
       }
-      setCurrentDisplay(currentProgress.paginatedResults[0]);
+      setCurrentDisplay({ progress: currentProgress.paginatedResults[0], auto: false });
       setCurrentInfo(currentProgress.paginatedResults[0]);
       setLoadingState('loading');
       let offset = OFFSET;
@@ -70,7 +81,7 @@ const UserPage = ({ match }: RouteComponentProps<MatchParams>) => {
   }, [match, history, sortFun, loadingState, isReversed]);
 
   const handleCurrentDisplay = (i: number) => {
-    setCurrentDisplay(progress[i]);
+    setCurrentDisplay({ progress: progress[i], auto: true });
   }
 
   const handleCurrentInfo = (i: number) => {
@@ -99,11 +110,39 @@ const UserPage = ({ match }: RouteComponentProps<MatchParams>) => {
     setProgress(sortSongs(progress, parseInt(e.target.value), isReversed));
   }
 
+  const handleSearchBy = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    if (e.target.value === 'hits' || e.target.value === 'miss') {
+      setSearch('0');
+    } else if (e.target.value === 'seen') {
+      setSearch('1');
+    } else {
+      setSearch('');
+    }
+    setSearchBy(e.target.value as SearchType);
+  }
+
   if (loadingState === 'loading' || loadingState === 'loaded') {
     return (
       <div id='user-page'>
         <h1 className='indent'>{user}</h1>
         <h3 className='indent'>Number of Songs Encountered: {numSongs}</h3>
+        <div id='search-container'>
+          <select
+            onChange={handleSearchBy}>
+            <option value='artist'>Search by Artist</option>
+            <option value='title'>Search by Song Title</option>
+            <option value='eng'>Search by Anime (English)</option>
+            <option value='rom'>Search by Anime (Romaji)</option>
+            <option value='hits'>Search by Hits</option>
+            <option value='miss'>Search by Misses</option>
+            <option value='seen'>Search by Number Seen</option>
+          </select>
+          <input type={
+            searchBy === 'hits' || searchBy === 'miss' || searchBy === 'seen' ? 'number' : 'text'} id='song-search'
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)}
+            value={search}
+          />
+        </div>
         <div className='songs-container'>
           <div className='progress-item-list-container'>
             <div id='list-header'>
@@ -113,16 +152,31 @@ const UserPage = ({ match }: RouteComponentProps<MatchParams>) => {
               <div>Hits</div>
               <div />
             </div>
-            {progress.map((item, i) => <ProgressItem
-              item={item}
-              key={item._id}
-              onClick={() => handleCurrentInfo(i)}
-              onClickPlay={() => handleCurrentDisplay(i)}
-              isEnglish={isEnglish}
-            />)}
+            {progress.reduce((acc, item, i) => {
+              if ((searchBy === 'title' && item.song[0].songName.toLowerCase().includes(search))
+                || (searchBy === 'artist' && item.song[0].songArtist.toLowerCase().includes(search))
+                || (searchBy === 'eng' && item.song[0].anime.english?.toLowerCase().includes(search))
+                || (searchBy === 'rom' && item.song[0].anime.romaji?.toLowerCase().includes(search))
+                || (searchBy === 'hits' && item.hits === parseInt(search))
+                || (searchBy === 'miss' && item.misses === parseInt(search))
+                || (searchBy === 'seen' && item.hits + item.misses === parseInt(search))
+              ) {
+                acc.push(<ProgressItem
+                  item={item}
+                  key={item._id}
+                  onClick={() => handleCurrentInfo(i)}
+                  onClickPlay={() => handleCurrentDisplay(i)}
+                  isEnglish={isEnglish}
+                />);
+              }
+              return acc;
+            }, [] as JSX.Element[])}
           </div>
           <div id='right-fixed'>
-            <VideoPlayer src={currentDisplay ? currentDisplay.song[0] : null} />
+            <VideoPlayer
+              src={currentDisplay ? currentDisplay.progress.song[0] : null}
+              auto={currentDisplay ? currentDisplay.auto : false}
+            />
             <br />
             <div id='toolbox'>
               <div id='toolbox-content'>

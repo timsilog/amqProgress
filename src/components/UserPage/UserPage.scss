@@ -5,6 +5,16 @@
   .indent {
     margin-left: 3%;
   }
+  #search-container {
+    margin-left: 2%;
+    display: flex;
+    // justify-content: center;
+    width: 55%;
+  }
+  #song-search {
+    height: 1.5em;
+    width: 60%;
+  }
 }
 
 .songs-container {
