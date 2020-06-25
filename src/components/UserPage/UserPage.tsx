@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { withRouter, useHistory, RouteComponentProps } from 'react-router-dom';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 import ProgressItem from '../ProgressItem/ProgressItem';
 import VideoPlayer from '../VideoPlayer/VideoPlayer';
 import InfoItem from '../InfoItem/InfoItem';
@@ -10,12 +10,17 @@ import { Progress } from '../../types';
 import './UserPage.scss';
 import './react-toggle.scss';
 
-const OFFSET = 500;
+const OFFSET = 1000;
 const url = `https://serene-temple-88689.herokuapp.com`
 
 type MatchParams = {
   username: string
 }
+
+type LoadingState =
+  'unloaded' |
+  'loading' |
+  'loaded'
 
 type SearchType =
   'title' |
@@ -32,15 +37,17 @@ const UserPage = ({ match }: RouteComponentProps<MatchParams>) => {
   const [progress, setProgress] = useState<Progress[]>([]);
   const [currentDisplay, setCurrentDisplay] = useState<{ progress: Progress, auto: boolean } | null>(null);
   const [currentInfo, setCurrentInfo] = useState<Progress | null>(null);
-  const [loadingState, setLoadingState] = useState('unloaded');
+  const [loadingState, setLoadingState] = useState<LoadingState>('unloaded');
   const [sortFun, setSortFun] = useState(1);
   const [isEnglish, setIsEnglish] = useState(true);
   const [isReversed, setIsReversed] = useState(false);
   const [currentTab, setCurrentTab] = useState<'filter' | 'info' | 'queue'>('filter');
   const [searchBy, setSearchBy] = useState<SearchType>('artist');
   const [search, setSearch] = useState('');
-  const history = useHistory();
+  const [numLoaded, setNumLoaded] = useState(0);
 
+
+  // on page load
   useEffect(() => {
     const getUser = async () => {
       const dbUser = (await (await fetch(`${url}/users?username=${match.params.username}`)).json()).users[0];
@@ -49,36 +56,53 @@ const UserPage = ({ match }: RouteComponentProps<MatchParams>) => {
       }
     }
     const getProgress = async () => {
-      let response = await fetch(`${url}/progress?username=${match.params.username.toLowerCase()}`);
-      let currentProgress = (await response.json()).progress;
-      if (!currentProgress || !currentProgress.paginatedResults.length) {
+      console.time('getProgress');
+      // get first batch of songs
+      const response = await fetch(`${url}/progress?username=${match.params.username.toLowerCase()}`);
+      const firstBatch = (await response.json()).progress;
+      if (!firstBatch || !firstBatch.paginatedResults.length) {
         return;
       }
-      setCurrentDisplay({ progress: currentProgress.paginatedResults[0], auto: false });
-      setCurrentInfo(currentProgress.paginatedResults[0]);
-      setLoadingState('loading');
-      let offset = OFFSET;
+      setProgress(firstBatch.paginatedResults);
+      setNumSongs(firstBatch.totalCount[0].count);
+      setNumLoaded(firstBatch.paginatedResults.length);
+      setCurrentDisplay({ progress: firstBatch.paginatedResults[0], auto: false });
+      setCurrentInfo(firstBatch.paginatedResults[0]);
+
+      // function to set all songs after loading them
       const updateProgress = (prev: Progress[]) => {
-        let latest = [...prev, ...currentProgress.paginatedResults];
+        let latest = prev.concat(...responses);
         latest = sortSongs(latest, sortFun, isReversed);
         return latest;
       }
-      if (currentProgress) {
-        setNumSongs(currentProgress.totalCount[0].count);
+
+      // fetch the rest of the songs using promise all
+      const urls = [];
+      for (let offset = OFFSET; offset < firstBatch.totalCount[0].count; offset += OFFSET) {
+        urls.push({
+          url: `${url}/progress?username=${match.params.username}&offset=${offset}`,
+          offset
+        })
       }
-      while (currentProgress && currentProgress.paginatedResults.length > 0) {
-        setProgress(updateProgress);
-        response = await fetch(`${url}/progress?username=${match.params.username}&offset=${offset}`);
-        currentProgress = (await response.json()).progress;
-        offset += OFFSET;
-      }
+      const responses = await Promise.all(
+        urls.map(async obj => {
+          console.time(`Get ${obj.url}`);
+          const response = await (await fetch(obj.url)).json();
+          setNumLoaded(prev => prev + response.progress.paginatedResults.length);
+          console.timeEnd(`Get ${obj.url}`);
+          return response.progress.paginatedResults;
+        })
+      );
+      setProgress(updateProgress);
       setLoadingState('loaded');
+      console.timeEnd('getProgress');
     }
     if (loadingState === 'unloaded') {
+      setLoadingState('loading');
       getUser();
       getProgress();
     }
-  }, [match, history, sortFun, loadingState, isReversed]);
+  }, [match, sortFun, loadingState, isReversed]);
 
   const handleCurrentDisplay = (i: number) => {
     setCurrentDisplay({ progress: progress[i], auto: true });
@@ -121,7 +145,7 @@ const UserPage = ({ match }: RouteComponentProps<MatchParams>) => {
     setSearchBy(e.target.value as SearchType);
   }
 
-  if (loadingState === 'loading' || loadingState === 'loaded') {
+  if (loadingState === 'loaded') {
     return (
       <div id='user-page'>
         <h1 className='indent'>{user}</h1>
@@ -233,7 +257,7 @@ const UserPage = ({ match }: RouteComponentProps<MatchParams>) => {
     return (
       <div id='loader'>
         <Loader type="Hearts" color="#E06E77" height={100} width={100} />
-          Getting Songs...
+            Getting Songs... {numSongs ? `(${numLoaded}/${numSongs})` : ''}
       </div>
     )
   }

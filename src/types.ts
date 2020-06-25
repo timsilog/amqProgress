@@ -1,10 +1,16 @@
 export interface Progress {
   _id: string,
   correctGuesses: {
-    [key: string]: number,
+    [key: string]: {
+      guess: string,
+      count: number
+    },
   },
   incorrectGuesses: {
-    [key: string]: number,
+    [key: string]: {
+      guess: string,
+      count: number
+    },
   },
   correctGuessesOld: string[],
   incorrectGuessesOld: string[],

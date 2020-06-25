@@ -29,15 +29,45 @@ const InfoItem = (props: InfoItemProps) => {
         <div className='gray'>Native:</div>
         <div>{props.src.song[0].anime.native}</div>
       </div>
-      <div className='gray'>Incorrect Guesses:</div>
-      <div className='smaller-indented'>
-        {props.src.incorrectGuessesOld.map(str => <div key={str}>{str}</div>)}
-      </div>
+      {props.src.incorrectGuesses && Object.keys(props.src.incorrectGuesses).length ?
+        <div>
+          <div className='gray'>Incorrect Guesses:</div>
+          <div className='smaller-indented info-grid'>
+            <div className='guess-count'>Count</div>
+            <div>Guess</div>
+            {Object.values(props.src.incorrectGuesses).map(guess => [<div className='guess-count' key={`${guess.count}${guess.guess}`}>{guess.count}</div>, <div key={guess.guess}>{guess.guess}</div>])}
+          </div>
+        </div>
+        : <div />}
       <br />
-      <div className='gray'>Correct Guesses</div>
-      <div className='smaller-indented'>
-        {props.src.correctGuessesOld.map(str => <div key={str}>{str}</div>)}
-      </div>
+      {props.src.correctGuesses && Object.keys(props.src.correctGuesses).length ?
+        <div>
+          <div className='gray'>Correct Guesses:</div>
+          <div className='smaller-indented info-grid'>
+            <div className='guess-count'>Count</div>
+            <div>Guess</div>
+            {Object.values(props.src.correctGuesses).map(guess => [<div className='guess-count' key={`${guess.count}${guess.guess}`}>{guess.count}</div>, <div key={guess.guess}>{guess.guess}</div>])}
+          </div>
+        </div>
+        : <div />}
+      <br />
+      {/* {props.src.incorrectGuessesOld && props.src.incorrectGuessesOld.length ?
+        <div>
+          <div className='gray'>Old Incorrect Guesses:</div>
+          <div className='smaller-indented'>
+            {props.src.incorrectGuessesOld.map(str => <div key={str}>{str}</div>)}
+          </div>
+        </div>
+        : <div />}
+      <br />
+      {props.src.correctGuessesOld && props.src.correctGuessesOld.length ?
+        <div>
+          <div className='gray'>Old Correct Guesses</div>
+          <div className='smaller-indented'>
+            {props.src.correctGuessesOld.map(str => <div key={str}>{str}</div>)}
+          </div>
+        </div>
+      : <div />}*/}
     </div>
   )
 }
