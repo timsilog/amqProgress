@@ -1,19 +1,25 @@
 @import '../../App.scss';
 
 #user-page {
-  margin-top: 2%;
-  .indent {
-    margin-left: 3%;
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+  margin-left: 2%;
+  h1 {
+    margin-bottom: 0;
   }
   #search-container {
-    margin-left: 2%;
     display: flex;
-    // justify-content: center;
-    width: 55%;
   }
   #song-search {
     height: 1.5em;
-    width: 60%;
+    width: 100%;
+  }
+  #items-per-page-container {
+    font-size: .8em;
+    select {
+      margin-left: 1%;
+    }
   }
 }
 
@@ -22,10 +28,9 @@
 }
 
 .progress-item-list-container {
-  margin-left: 2%;
   display: flex;
   flex-direction: column;
-  width: 60%;
+  // width: 60%;
   #list-header {
     padding: 10px;
     display: grid;

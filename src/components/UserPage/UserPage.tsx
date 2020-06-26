@@ -3,6 +3,7 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import ProgressItem from '../ProgressItem/ProgressItem';
 import VideoPlayer from '../VideoPlayer/VideoPlayer';
 import InfoItem from '../InfoItem/InfoItem';
+import PageTabs from '../PageTabs/PageTabs';
 import Loader from 'react-loader-spinner';
 import Toggle from 'react-toggle';
 import sortSongs from './sortFunctions';
@@ -10,7 +11,8 @@ import { Progress } from '../../types';
 import './UserPage.scss';
 import './react-toggle.scss';
 
-const OFFSET = 1000;
+const OFFSET = 500;
+const STARTING_AMOUNT = 20;
 const url = `https://serene-temple-88689.herokuapp.com`
 
 type MatchParams = {
@@ -45,7 +47,8 @@ const UserPage = ({ match }: RouteComponentProps<MatchParams>) => {
   const [searchBy, setSearchBy] = useState<SearchType>('artist');
   const [search, setSearch] = useState('');
   const [numLoaded, setNumLoaded] = useState(0);
-
+  const [numShowing, setNumShowing] = useState(20);
+  const [currentPage, setCurrentPage] = useState(1);
 
   // on page load
   useEffect(() => {
@@ -56,9 +59,8 @@ const UserPage = ({ match }: RouteComponentProps<MatchParams>) => {
       }
     }
     const getProgress = async () => {
-      console.time('getProgress');
-      // get first batch of songs
-      const response = await fetch(`${url}/progress?username=${match.params.username.toLowerCase()}`);
+      // get first batch of STARTING_AMOUNT songs
+      const response = await fetch(`${url}/progress?username=${match.params.username.toLowerCase()}&limit=${STARTING_AMOUNT}`);
       const firstBatch = (await response.json()).progress;
       if (!firstBatch || !firstBatch.paginatedResults.length) {
         return;
@@ -68,6 +70,7 @@ const UserPage = ({ match }: RouteComponentProps<MatchParams>) => {
       setNumLoaded(firstBatch.paginatedResults.length);
       setCurrentDisplay({ progress: firstBatch.paginatedResults[0], auto: false });
       setCurrentInfo(firstBatch.paginatedResults[0]);
+      setLoadingState('loading');
 
       // function to set all songs after loading them
       const updateProgress = (prev: Progress[]) => {
@@ -78,27 +81,23 @@ const UserPage = ({ match }: RouteComponentProps<MatchParams>) => {
 
       // fetch the rest of the songs using promise all
       const urls = [];
-      for (let offset = OFFSET; offset < firstBatch.totalCount[0].count; offset += OFFSET) {
+      for (let currentOffset = STARTING_AMOUNT; currentOffset < firstBatch.totalCount[0].count; currentOffset += OFFSET) {
         urls.push({
-          url: `${url}/progress?username=${match.params.username}&offset=${offset}`,
-          offset
+          url: `${url}/progress?username=${match.params.username}&offset=${currentOffset}&limit=${OFFSET}`,
+          offset: currentOffset
         })
       }
       const responses = await Promise.all(
         urls.map(async obj => {
-          console.time(`Get ${obj.url}`);
           const response = await (await fetch(obj.url)).json();
           setNumLoaded(prev => prev + response.progress.paginatedResults.length);
-          console.timeEnd(`Get ${obj.url}`);
           return response.progress.paginatedResults;
         })
       );
       setProgress(updateProgress);
       setLoadingState('loaded');
-      console.timeEnd('getProgress');
     }
     if (loadingState === 'unloaded') {
-      setLoadingState('loading');
       getUser();
       getProgress();
     }
@@ -145,11 +144,15 @@ const UserPage = ({ match }: RouteComponentProps<MatchParams>) => {
     setSearchBy(e.target.value as SearchType);
   }
 
-  if (loadingState === 'loaded') {
+  const handleItemsPerPage = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setNumShowing(parseInt(e.target.value));
+  }
+
+  if (loadingState === 'loaded' || 'loading') {
     return (
       <div id='user-page'>
-        <h1 className='indent'>{user}</h1>
-        <h3 className='indent'>Number of Songs Encountered: {numSongs}</h3>
+        <h1>{user}</h1>
+        <h3>Number of Songs Encountered: {numSongs}</h3>
         <div id='search-container'>
           <select
             onChange={handleSearchBy}>
@@ -167,6 +170,23 @@ const UserPage = ({ match }: RouteComponentProps<MatchParams>) => {
             value={search}
           />
         </div>
+        <br />
+        <div id='items-per-page-container'>
+          Items per page
+          <select
+            onChange={handleItemsPerPage}>
+            <option value={20}>20</option>
+            <option value={50}>50</option>
+            <option value={100}>100</option>
+            <option value={200}>200</option>
+            <option value={500}>500</option>
+          </select>
+        </div>
+        <PageTabs
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          numPages={Math.floor(numSongs / numShowing)}
+        />
         <div className='songs-container'>
           <div className='progress-item-list-container'>
             <div id='list-header'>
@@ -194,7 +214,7 @@ const UserPage = ({ match }: RouteComponentProps<MatchParams>) => {
                 />);
               }
               return acc;
-            }, [] as JSX.Element[])}
+            }, [] as JSX.Element[]).slice((currentPage - 1) * numShowing, (currentPage - 1) * numShowing + numShowing)}
           </div>
           <div id='right-fixed'>
             <VideoPlayer
@@ -213,7 +233,7 @@ const UserPage = ({ match }: RouteComponentProps<MatchParams>) => {
                       <div id='filter'>
                         {loadingState === 'loaded'
                           ? <div id='filter-header' className='loaded'>Filter</div>
-                          : <div id='filter-header'><Loader type="Hearts" color="#E06E77" height={50} width={50} />Loading Songs ({progress.length}/{numSongs})</div>}
+                          : <div id='filter-header'><Loader type="Hearts" color="#E06E77" height={50} width={50} />Loading Songs ({numLoaded}/{numSongs})</div>}
                         <div className='line'></div>
                         <div id='filter-grid'>
                           <label><Toggle
