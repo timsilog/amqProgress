@@ -5,6 +5,13 @@
   padding: 5%;
   overflow-y: auto;
   line-height: 1.3em;
+  display: flex;
+  flex-direction: column;
+  #last-seen {
+    align-self: flex-end;
+    margin-bottom: 1%;
+    font-size: .7em;
+  }
   .smaller-indented {
     margin-left: 5%;
     font-size: .8em;

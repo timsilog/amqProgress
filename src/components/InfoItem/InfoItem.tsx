@@ -10,8 +10,25 @@ const InfoItem = (props: InfoItemProps) => {
   if (!props.src) {
     return <div></div>
   }
+  console.log(new Date(props.src.lastSeen).toDateString())
+  let timeStr;
+  let time = (Date.now() - props.src.lastSeen) / 1000; // to seconds
+  if (time > 60 * 60 * 24) {
+    time = time / 60 / 60 / 24; // to days
+    timeStr = `${Math.floor(time)} day${time >= 2 ? 's' : ''} ago`;
+  } else if (time > 60 * 60) {
+    time = time / 60 / 60; // to hours
+    timeStr = `${Math.floor(time)} hour${time >= 2 ? 's' : ''} ago`;
+  } else if (time > 60) {
+    time = time / 60; // to mins
+    timeStr = `${Math.floor(time)} minute${time >= 2 ? 's' : ''} ago`;
+  } else {
+    timeStr = 'Just Now'
+  }
+
   return (
     <div id='info-item-container'>
+      <div id='last-seen'>{timeStr}</div>
       <div className='info-grid'>
         <div className='gray'>Title:</div>
         <div>{props.src.song[0].songName}</div>
