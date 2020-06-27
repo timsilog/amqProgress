@@ -182,11 +182,13 @@ const UserPage = ({ match }: RouteComponentProps<MatchParams>) => {
             <option value={500}>500</option>
           </select>
         </div>
-        <PageTabs
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-          numPages={Math.floor(numSongs / numShowing)}
-        />
+        {numLoaded
+          ? <PageTabs
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            numPages={Math.floor(numSongs / numShowing)}
+          />
+          : ''}
         <div className='songs-container'>
           <div className='progress-item-list-container'>
             <div id='list-header'>
@@ -216,59 +218,67 @@ const UserPage = ({ match }: RouteComponentProps<MatchParams>) => {
               return acc;
             }, [] as JSX.Element[]).slice((currentPage - 1) * numShowing, (currentPage - 1) * numShowing + numShowing)}
           </div>
-          <div id='right-fixed'>
-            <VideoPlayer
-              src={currentDisplay ? currentDisplay.progress.song[0] : null}
-              auto={currentDisplay ? currentDisplay.auto : false}
-            />
-            <br />
-            <div id='toolbox'>
-              <div id='toolbox-content'>
-                {
-                  currentTab === 'info' ?
-                    <InfoItem src={currentInfo ? currentInfo : null} />
-                    : currentTab === 'queue' ?
-                      <div>Coming Soon</div>
-                      :
-                      <div id='filter'>
-                        {loadingState === 'loaded'
-                          ? <div id='filter-header' className='loaded'>Filter</div>
-                          : <div id='filter-header'><Loader type="Hearts" color="#E06E77" height={50} width={50} />Loading Songs ({numLoaded}/{numSongs})</div>}
-                        <div className='line'></div>
-                        <div id='filter-grid'>
-                          <label><Toggle
-                            icons={{
-                              checked: <b className='toggle-icon'>R</b>,
-                              unchecked: <b className='toggle-icon'>E</b>
-                            }}
-                            checked={!isEnglish}
-                            disabled={loadingState === 'loaded' ? false : true}
-                            onChange={handleLanguageToggle}
-                          />English/Romaji</label>
-                          <label><Toggle
-                            checked={isReversed}
-                            disabled={loadingState === 'loaded' ? false : true}
-                            onChange={handleReverseToggle}
-                          />Reverse</label>
-                          <label><input type="radio" id="by-most-seen" name='filter-by' value="1" checked={sortFun === 1} onChange={handleRadio} disabled={loadingState === 'loaded' ? false : true} />By Most Seen</label>
-                          <label><input type="radio" id="by-last-seen" name='filter-by' value="2" checked={sortFun === 2} onChange={handleRadio} disabled={loadingState === 'loaded' ? false : true} />By Last Seen</label>
-                          <label><input type="radio" id="by-most-missed" name='filter-by' value="3" checked={sortFun === 3} onChange={handleRadio} disabled={loadingState === 'loaded' ? false : true} />By Most Missed</label>
-                          <label><input type="radio" id="by-most-hit" name='filter-by' value="4" checked={sortFun === 4} onChange={handleRadio} disabled={loadingState === 'loaded' ? false : true} />By Most Accurate</label>
-                          <label><input type="radio" id="by-artist" name='filter-by' value="5" checked={sortFun === 5} onChange={handleRadio} disabled={loadingState === 'loaded' ? false : true} />By Artist</label>
-                          <label><input type="radio" id="by-title" name='filter-by' value="6" checked={sortFun === 6} onChange={handleRadio} disabled={loadingState === 'loaded' ? false : true} />By Song Title</label>
-                          <label><input type="radio" id="by-anime-en" name='filter-by' value="7" checked={sortFun === 7} onChange={handleRadio} disabled={loadingState === 'loaded' ? false : true} />By Anime [English]</label>
-                          <label><input type="radio" id="by-anime-jp" name='filter-by' value="8" checked={sortFun === 8} onChange={handleRadio} disabled={loadingState === 'loaded' ? false : true} />By Anime [Romaji]</label>
-                        </div>
+        </div>
+        {numLoaded
+          ? <PageTabs
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            numPages={Math.floor(numSongs / numShowing)}
+          />
+          : ''}
+        <div id='right-fixed'>
+          <VideoPlayer
+            src={currentDisplay ? currentDisplay.progress.song[0] : null}
+            auto={currentDisplay ? currentDisplay.auto : false}
+          />
+          <br />
+          <div id='toolbox'>
+            <div id='toolbox-content'>
+              {
+                currentTab === 'info' ?
+                  <InfoItem src={currentInfo ? currentInfo : null} />
+                  : currentTab === 'queue' ?
+                    <div>Coming Soon</div>
+                    :
+                    <div id='filter'>
+                      {loadingState === 'loaded'
+                        ? <div id='filter-header' className='loaded'>Filter</div>
+                        : <div id='filter-header'><Loader type="Hearts" color="#E06E77" height={50} width={50} />Loading Songs ({numLoaded}/{numSongs})</div>}
+                      <div className='line'></div>
+                      <div id='filter-grid'>
+                        <label><Toggle
+                          icons={{
+                            checked: <b className='toggle-icon'>R</b>,
+                            unchecked: <b className='toggle-icon'>E</b>
+                          }}
+                          checked={!isEnglish}
+                          disabled={loadingState === 'loaded' ? false : true}
+                          onChange={handleLanguageToggle}
+                        />English/Romaji</label>
+                        <label><Toggle
+                          checked={isReversed}
+                          disabled={loadingState === 'loaded' ? false : true}
+                          onChange={handleReverseToggle}
+                        />Reverse</label>
+                        <label><input type="radio" id="by-most-seen" name='filter-by' value="1" checked={sortFun === 1} onChange={handleRadio} disabled={loadingState === 'loaded' ? false : true} />By Most Seen</label>
+                        <label><input type="radio" id="by-last-seen" name='filter-by' value="2" checked={sortFun === 2} onChange={handleRadio} disabled={loadingState === 'loaded' ? false : true} />By Last Seen</label>
+                        <label><input type="radio" id="by-most-missed" name='filter-by' value="3" checked={sortFun === 3} onChange={handleRadio} disabled={loadingState === 'loaded' ? false : true} />By Most Missed</label>
+                        <label><input type="radio" id="by-most-hit" name='filter-by' value="4" checked={sortFun === 4} onChange={handleRadio} disabled={loadingState === 'loaded' ? false : true} />By Most Accurate</label>
+                        <label><input type="radio" id="by-artist" name='filter-by' value="5" checked={sortFun === 5} onChange={handleRadio} disabled={loadingState === 'loaded' ? false : true} />By Artist</label>
+                        <label><input type="radio" id="by-title" name='filter-by' value="6" checked={sortFun === 6} onChange={handleRadio} disabled={loadingState === 'loaded' ? false : true} />By Song Title</label>
+                        <label><input type="radio" id="by-anime-en" name='filter-by' value="7" checked={sortFun === 7} onChange={handleRadio} disabled={loadingState === 'loaded' ? false : true} />By Anime [English]</label>
+                        <label><input type="radio" id="by-anime-jp" name='filter-by' value="8" checked={sortFun === 8} onChange={handleRadio} disabled={loadingState === 'loaded' ? false : true} />By Anime [Romaji]</label>
                       </div>
-                }
-              </div>
-              <div id='toolbox-tabs'>
-                <div className={currentTab === 'filter' ? 'tab-selected' : ''} onClick={() => setCurrentTab('filter')}>Filter</div>
-                <div className={currentTab === 'info' ? 'tab-selected' : ''} onClick={() => setCurrentTab('info')}>Info</div>
-                <div className={currentTab === 'queue' ? 'tab-selected' : ''} onClick={() => setCurrentTab('queue')}>Queue</div>
-              </div>
+                    </div>
+              }
+            </div>
+            <div id='toolbox-tabs'>
+              <div className={currentTab === 'filter' ? 'tab-selected' : ''} onClick={() => setCurrentTab('filter')}>Filter</div>
+              <div className={currentTab === 'info' ? 'tab-selected' : ''} onClick={() => setCurrentTab('info')}>Info</div>
+              <div className={currentTab === 'queue' ? 'tab-selected' : ''} onClick={() => setCurrentTab('queue')}>Queue</div>
             </div>
           </div>
+
         </div>
       </div>
     )
