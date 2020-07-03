@@ -206,6 +206,7 @@ const UserPage = ({ match }: RouteComponentProps<MatchParams>) => {
           ? <PageTabs
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
+            keyName='top'
             numPages={Math.floor(searchResults.length / numShowing)}
           />
           : ''}
@@ -225,15 +226,16 @@ const UserPage = ({ match }: RouteComponentProps<MatchParams>) => {
           ? <PageTabs
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
+            keyName='bot'
             numPages={Math.floor(searchResults.length / numShowing)}
           />
           : ''}
         <div id='right-fixed'>
+          <div id='nav-gap' />
           <VideoPlayer
             src={currentDisplay ? currentDisplay.progress.song[0] : null}
             auto={currentDisplay ? currentDisplay.auto : false}
           />
-          <br />
           <div id='toolbox'>
             <div id='toolbox-content'>
               {

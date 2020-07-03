@@ -6,6 +6,7 @@ const NUMTABS = 9;
 export type PageTabsProps = {
   numPages: number,
   currentPage: number,
+  keyName: string,
   setCurrentPage: Function
 }
 
@@ -18,7 +19,8 @@ const PageTabs = (props: PageTabsProps) => {
   pageLinks.push(
     <button
       className={`pagelink${1 === props.currentPage ? ' current' : ''}`}
-      key={1}
+      key={`${props.keyName}1`}
+      value={1}
       onClick={() => {
         props.setCurrentPage(1)
       }}
@@ -52,7 +54,7 @@ const PageTabs = (props: PageTabsProps) => {
     pageLinks.push(
       <button
         className={`pagelink${i === props.currentPage ? ' current' : ''}`}
-        key={i}
+        key={`${props.keyName}${i}`}
         value={i}
         onClick={(e: any) => {
           props.setCurrentPage(parseInt(e.target.value))
