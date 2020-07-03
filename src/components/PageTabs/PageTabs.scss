@@ -5,13 +5,15 @@
   margin-bottom: 1%;
   width: 70%;
   align-self: center;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  justify-content: center;
+  display: flex;
+  // grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
   height: 2em;
   .current {
     background-color: $lighter-gray;
   }
   button {
+    width: 11.1%;
     color: white;
     height: 100%;
     display: flex;

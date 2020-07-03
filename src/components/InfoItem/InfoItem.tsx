@@ -10,7 +10,6 @@ const InfoItem = (props: InfoItemProps) => {
   if (!props.src) {
     return <div></div>
   }
-  console.log(new Date(props.src.lastSeen).toDateString())
   let timeStr;
   let time = (Date.now() - props.src.lastSeen) / 1000; // to seconds
   if (time > 60 * 60 * 24) {

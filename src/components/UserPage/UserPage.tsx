@@ -50,7 +50,7 @@ const UserPage = ({ match }: RouteComponentProps<MatchParams>) => {
   const [numShowing, setNumShowing] = useState(20);
   const [currentPage, setCurrentPage] = useState(1);
 
-  // on page load
+  // ON PAGE LOAD
   useEffect(() => {
     const getUser = async () => {
       const dbUser = (await (await fetch(`${url}/users?username=${match.params.username}`)).json()).users[0];
@@ -60,7 +60,7 @@ const UserPage = ({ match }: RouteComponentProps<MatchParams>) => {
     }
     const getProgress = async () => {
       // get first batch of STARTING_AMOUNT songs
-      const response = await fetch(`${url}/progress?username=${match.params.username.toLowerCase()}&limit=${STARTING_AMOUNT}`);
+      const response = await fetch(`${url}/progress?username=${match.params.username}&limit=${STARTING_AMOUNT}`);
       const firstBatch = (await response.json()).progress;
       if (!firstBatch || !firstBatch.paginatedResults.length) {
         return;
@@ -148,7 +148,27 @@ const UserPage = ({ match }: RouteComponentProps<MatchParams>) => {
     setNumShowing(parseInt(e.target.value));
   }
 
+  // RENDER
   if (loadingState === 'loaded' || 'loading') {
+    const searchResults = progress.reduce((acc, item, i) => {
+      if ((searchBy === 'title' && item.song[0].songName.toLowerCase().includes(search))
+        || (searchBy === 'artist' && item.song[0].songArtist.toLowerCase().includes(search))
+        || (searchBy === 'eng' && item.song[0].anime.english?.toLowerCase().includes(search))
+        || (searchBy === 'rom' && item.song[0].anime.romaji?.toLowerCase().includes(search))
+        || (searchBy === 'hits' && item.hits === parseInt(search))
+        || (searchBy === 'miss' && item.misses === parseInt(search))
+        || (searchBy === 'seen' && item.hits + item.misses === parseInt(search))
+      ) {
+        acc.push(<ProgressItem
+          item={item}
+          key={item._id}
+          onClick={() => handleCurrentInfo(i)}
+          onClickPlay={() => handleCurrentDisplay(i)}
+          isEnglish={isEnglish}
+        />);
+      }
+      return acc;
+    }, [] as JSX.Element[]);
     return (
       <div id='user-page'>
         <h1>{user}</h1>
@@ -186,7 +206,7 @@ const UserPage = ({ match }: RouteComponentProps<MatchParams>) => {
           ? <PageTabs
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
-            numPages={Math.floor(numSongs / numShowing)}
+            numPages={Math.floor(searchResults.length / numShowing)}
           />
           : ''}
         <div className='songs-container'>
@@ -198,32 +218,14 @@ const UserPage = ({ match }: RouteComponentProps<MatchParams>) => {
               <div>Hits</div>
               <div />
             </div>
-            {progress.reduce((acc, item, i) => {
-              if ((searchBy === 'title' && item.song[0].songName.toLowerCase().includes(search))
-                || (searchBy === 'artist' && item.song[0].songArtist.toLowerCase().includes(search))
-                || (searchBy === 'eng' && item.song[0].anime.english?.toLowerCase().includes(search))
-                || (searchBy === 'rom' && item.song[0].anime.romaji?.toLowerCase().includes(search))
-                || (searchBy === 'hits' && item.hits === parseInt(search))
-                || (searchBy === 'miss' && item.misses === parseInt(search))
-                || (searchBy === 'seen' && item.hits + item.misses === parseInt(search))
-              ) {
-                acc.push(<ProgressItem
-                  item={item}
-                  key={item._id}
-                  onClick={() => handleCurrentInfo(i)}
-                  onClickPlay={() => handleCurrentDisplay(i)}
-                  isEnglish={isEnglish}
-                />);
-              }
-              return acc;
-            }, [] as JSX.Element[]).slice((currentPage - 1) * numShowing, (currentPage - 1) * numShowing + numShowing)}
+            {searchResults.slice((currentPage - 1) * numShowing, (currentPage - 1) * numShowing + numShowing)}
           </div>
         </div>
         {numLoaded
           ? <PageTabs
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
-            numPages={Math.floor(numSongs / numShowing)}
+            numPages={Math.floor(searchResults.length / numShowing)}
           />
           : ''}
         <div id='right-fixed'>
