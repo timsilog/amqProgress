@@ -231,7 +231,7 @@ const UserPage = ({ match }: RouteComponentProps<MatchParams>) => {
           />
           : ''}
         <div id='right-fixed'>
-          <div id='nav-gap' />
+          {/* <div id='nav-gap' /> */}
           <VideoPlayer
             src={currentDisplay ? currentDisplay.progress.song[0] : null}
             auto={currentDisplay ? currentDisplay.auto : false}

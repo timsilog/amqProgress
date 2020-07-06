@@ -44,16 +44,19 @@
 }
 
 #right-fixed {
+  z-index: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
   width: 38%;
-  height: 100vh;
+  top: 3em;
+  height: calc(100vh - 3em);
   position: fixed;
   right: 0;
   bottom: 0;
   #nav-gap {
+    z-index: -1;
     height: 3em;
     width: 100%;
   }
