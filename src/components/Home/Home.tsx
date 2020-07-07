@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { HashLink } from 'react-router-hash-link';
 import './Home.scss';
 import arrow from './rightArrow.png';
+import temp from './temp.jpeg';
 
 const oneLiners = [
   'Never guess Sword Art on the wrong Lisa song again.',
@@ -44,7 +45,6 @@ const Home = () => {
 
   const handleScroll = (event: any) => {
     const element = event.target.scrollingElement;
-    console.log(element.scrollTop);
     if (!element.scrollTop) {
       setArrowHidden(false);
     }

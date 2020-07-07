@@ -60,7 +60,7 @@ const UserPage = ({ match }: RouteComponentProps<MatchParams>) => {
     }
     const getProgress = async () => {
       // get first batch of STARTING_AMOUNT songs
-      const response = await fetch(`${url}/progress?username=${match.params.username}&limit=${STARTING_AMOUNT}`);
+      const response = await fetch(`${url}/progress?username=${match.params.username}&method=username&limit=${STARTING_AMOUNT}`);
       const firstBatch = (await response.json()).progress;
       if (!firstBatch || !firstBatch.paginatedResults.length) {
         return;
@@ -83,7 +83,7 @@ const UserPage = ({ match }: RouteComponentProps<MatchParams>) => {
       const urls = [];
       for (let currentOffset = STARTING_AMOUNT; currentOffset < firstBatch.totalCount[0].count; currentOffset += OFFSET) {
         urls.push({
-          url: `${url}/progress?username=${match.params.username}&offset=${currentOffset}&limit=${OFFSET}`,
+          url: `${url}/progress?username=${match.params.username}&method=username&offset=${currentOffset}&limit=${OFFSET}`,
           offset: currentOffset
         })
       }
