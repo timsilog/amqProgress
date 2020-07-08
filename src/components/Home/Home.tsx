@@ -70,8 +70,8 @@ const Home = () => {
           id='wave'>
           <defs>
             <linearGradient id="gradient" gradientTransform="rotate(65)">
-              <stop offset="1%" stopColor="rgba(117, 87, 137, 1)" />
-              <stop offset="96%" stopColor="rgba(255, 145, 154, .8)" />
+              <stop offset="1%" stopColor="rgba(177, 107, 197, 1)" />
+              <stop offset="96%" stopColor="rgba(255, 135, 144, .8)" />
             </linearGradient>
           </defs>
           <path
