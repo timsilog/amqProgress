@@ -30,6 +30,9 @@
   }
   #search {
     display: flex; 
-    width: 18em;
+    align-items: flex-end;
+    input {
+      margin-right: 10px;
+    }
   }
 }

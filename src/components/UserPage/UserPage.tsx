@@ -70,7 +70,6 @@ const UserPage = ({ match }: RouteComponentProps<MatchParams>) => {
       setNumLoaded(firstBatch.paginatedResults.length);
       setCurrentDisplay({ progress: firstBatch.paginatedResults[0], auto: false });
       setCurrentInfo(firstBatch.paginatedResults[0]);
-      setLoadingState('loading');
 
       // function to set all songs after loading them
       const updateProgress = (prev: Progress[]) => {
@@ -87,6 +86,7 @@ const UserPage = ({ match }: RouteComponentProps<MatchParams>) => {
           offset: currentOffset
         })
       }
+      setLoadingState('loading');
       const responses = await Promise.all(
         urls.map(async obj => {
           const response = await (await fetch(obj.url)).json();
@@ -149,7 +149,7 @@ const UserPage = ({ match }: RouteComponentProps<MatchParams>) => {
   }
 
   // RENDER
-  if (loadingState === 'loaded' || 'loading') {
+  if (loadingState === 'loaded' || loadingState === 'loading') {
     const searchResults = progress.reduce((acc, item, i) => {
       if ((searchBy === 'title' && item.song[0].songName.toLowerCase().includes(search))
         || (searchBy === 'artist' && item.song[0].songArtist.toLowerCase().includes(search))
