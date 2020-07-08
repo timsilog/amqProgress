@@ -68,6 +68,12 @@ const Home = () => {
           viewBox="0 0 500 150"
           preserveAspectRatio="none"
           id='wave'>
+          <defs>
+            <linearGradient id="gradient" gradientTransform="rotate(65)">
+              <stop offset="1%" stopColor="rgba(117, 87, 137, 1)" />
+              <stop offset="96%" stopColor="rgba(255, 145, 154, .8)" />
+            </linearGradient>
+          </defs>
           <path
             d="M-1.12,149.50 C149.99,150.00 427.76,34.03 535.55,186.02 L502.82,-5.42 L-1.12,0.00 Z"
             id='wave-path'
