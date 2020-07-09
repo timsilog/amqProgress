@@ -106,20 +106,3 @@
     }
   }
 }
-
-#bg-pic-container {
-  position: absolute;
-  width: 100vw;
-  height: 70vh;
-  overflow: hidden;
-}
-#bg-pic {
-  position: absolute;
-  left: -100px;
-  top: -60px;
-  object-fit: cover;
-  height: 70vh;
-  opacity: .8;
-  filter: blur(1px);
-  transform: rotate(4deg);
-}

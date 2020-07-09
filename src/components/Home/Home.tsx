@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { HashLink } from 'react-router-hash-link';
 import './Home.scss';
 import arrow from './rightArrow.png';
+import bgimg from './amqans.png';
 
 const oneLiners = [
   'Never guess Sword Art on the wrong Lisa song ever again.',
