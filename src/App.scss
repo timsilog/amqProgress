@@ -1,6 +1,7 @@
 $base-gray: rgb(47, 47, 57);
 $lighter-gray: rgb(57, 57, 67);
 $darker-gray: rgb(37,37,37);
+$darker-blue: #2b86b1;
 $blue: #0099E0;
 $amq-red: #E06E77;
 $darker-red: rgb(177, 84, 92);
@@ -16,4 +17,12 @@ $gray: rgb(160,160,160);
 
 .App {
   text-align: center;
+}
+
+.container {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

@@ -1,6 +1,7 @@
 @import '../../App.scss';
 
 #home {
+  margin-top: 3em;
   width: 100vw;
   display: flex;
   flex-direction: column;
@@ -19,7 +20,7 @@
     align-self: center;
     // border: 2px solid $blue;
     color: white;
-    background-color: #2b86b1;
+    background-color: $darker-blue;
     font-size: 1.3em;
     &:focus {
       outline: none;
@@ -28,7 +29,8 @@
       background-color: $blue;
     }
     &:active {
-      width: 14.8em;
+      // width: 14.8em;
+      top: 55.1vh;
     }
   }
   .center-container {

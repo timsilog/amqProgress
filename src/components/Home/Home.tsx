@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { HashLink } from 'react-router-hash-link';
 import './Home.scss';
 import arrow from './rightArrow.png';
-import bgimg from './amqans.png';
 
 const oneLiners = [
   'Never guess Sword Art on the wrong Lisa song ever again.',
@@ -14,21 +13,21 @@ const oneLiners = [
   `Get those 10 rolls faster.`,
   `See all the different Lucky Star endings you've encountered.`,
   `Never get the wrong Haikyuu season ever again.`,
-  `Never get the wrong Jojo season ever again.`,
+  // `Never get the wrong Jojo season ever again.`,
   `Never guess the wrong Ali Project song ever again.`,
   `Learn all those 90's anime you missed out on.`,
   `Learn all the songs from the new anime you haven't seen yet.`,
   `Never guess Love Live on an Aikatsu song ever again.`,
   `Yes, Naruto has that many openings.`,
-  `Never guess the wrong season again.`,
+  // `Never guess the wrong season again.`,
   `Wait, he did more than just the Tokyo Ghoul OP?`,
   `No more guessing My Hero Academia on every shounen song.`,
   `Never guess the wrong Fate season ever again.`,
   `Never guess the wrong Monogatari season ever again.`,
   `Learn the idol meta.`,
   `Learn every Initial D stage.`,
-  `"But I never watch the ending" - Everyone else, but you.`,
-  `See how many times you put the wrong season.`,
+  `"But I never watch the endings" - Everyone else, but you.`,
+  `See how many times you put the wrong Jojo season.`,
   // `Differentiate Gate from Highschool of the Dead.`,
   // `Differentiate Gangsta from Dimension W`
 ]

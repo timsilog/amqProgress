@@ -1,3 +1,26 @@
+export interface AccountError {
+  emailOrUsername?: string,
+  accountNotFound?: string,
+  password?: string,
+  password2?: string,
+  passwordIncorrect?: string,
+  email?: string,
+  username?: string
+}
+
+export interface Action {
+  type: string, // from ./actions/actionTypes.ts
+  payload: any // either decoded or errors
+}
+
+export interface UserData {
+  emailOrUsername?: string,
+  email?: string,
+  username?: string,
+  password?: string,
+  password2?: string,
+}
+
 export interface Progress {
   _id: string,
   correctGuesses: {
