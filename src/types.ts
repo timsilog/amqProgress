@@ -8,6 +8,21 @@ export interface AccountError {
   username?: string
 }
 
+export interface Auth {
+  isAuthenticated: boolean,
+  user: any,
+  loading: boolean
+}
+
+export interface Account {
+  username: string,
+  email: string,
+  pw: string,
+  dateCreated: Date,
+  displayName: string,
+  isConfirmed: boolean
+}
+
 export interface Action {
   type: string, // from ./actions/actionTypes.ts
   payload: any // either decoded or errors

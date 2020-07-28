@@ -41,5 +41,12 @@
         cursor: pointer;
       }
     }
+    a {
+      text-decoration: none;
+      color: $darker-blue;
+      &:hover {
+        color: $blue;
+      }
+    }
   }
 }
