@@ -17,7 +17,7 @@ const Navbar = (props: NavbarProps) => {
   const history = useHistory();
 
   const submit = () => {
-    history.push(`/users/${searchText}`);
+    history.push(`/users/search/${searchText}`);
   }
 
   // const toggleModalOpen = () => {

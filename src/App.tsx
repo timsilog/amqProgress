@@ -3,17 +3,21 @@ import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 import UserPage from './components/UserPage/UserPage';
 import Home from './components/Home/Home';
 import Navbar from './components/Navbar/Navbar';
+import MediaPlayer from './components/MediaPlayer/MediaPlayer';
 import Register from './components/Register/Register';
 import LoginPage from './components/Login/LoginPage';
 import './App.scss';
 import { Provider } from 'react-redux';
 import store from './store';
+import '../node_modules/materialize-css/dist/css/materialize.min.css'
+import '../node_modules/materialize-css/dist/js/materialize.min.css'
 
 import jwt_decode from "jwt-decode";
 import setAuthToken from "./utils/setAuthToken";
 import { setCurrentUser, logoutUser } from "./actions/authActions";
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 import Dashboard from "./components/Dashboard/Dashboard";
+import UserSearch from './components/UserSearch/UserSearch';
 
 interface MyToken {
   name: string;
@@ -45,11 +49,14 @@ const App = () => {
         <Navbar />
         <Switch>
           <Route path='/' exact render={() => <Home />} />
-          <Route path='/users/:username' render={props => <UserPage key={props.match.params.username}></UserPage>} />
+          <Route path='/users/progress/:username' render={props => <UserPage key={props.match.params.username}></UserPage>} />
+          <Route exact path='/users/search' render={() => <UserSearch query=''></UserSearch>} />
+          <Route path='/users/search/:query' render={props => <UserSearch query={props.match.params.query}></UserSearch>} />
           <Route path='/register' render={() => <Register />} />
           <Route path='/login' render={() => <LoginPage />} />
           <PrivateRoute exact path="/dashboard" component={Dashboard} />
         </Switch>
+        <MediaPlayer />
       </Router>
     </Provider>
   );

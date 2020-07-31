@@ -14,6 +14,16 @@ export interface Auth {
   loading: boolean
 }
 
+export interface Media {
+  currentSong: Song | null,
+  isAuto: boolean,
+  // currentPlaylist: any
+}
+
+export interface AmqUser {
+  username: string,
+  displayName: string,
+}
 export interface Account {
   username: string,
   email: string,
@@ -21,11 +31,6 @@ export interface Account {
   dateCreated: Date,
   displayName: string,
   isConfirmed: boolean
-}
-
-export interface Action {
-  type: string, // from ./actions/actionTypes.ts
-  payload: any // either decoded or errors
 }
 
 export interface UserData {

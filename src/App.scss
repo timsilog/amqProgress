@@ -20,7 +20,7 @@ $gray: rgb(160,160,160);
 }
 
 .container {
-  height: 100vh;
+  height: calc(100vh - 3em);
   width: 100%;
   display: flex;
   justify-content: center;

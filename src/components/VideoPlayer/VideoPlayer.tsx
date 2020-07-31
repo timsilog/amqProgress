@@ -1,9 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Song } from '../../types';
+import { connect } from 'react-redux';
+import { Song, Media } from '../../types';
 import './VideoPlayer.scss';
+import { AppState } from '../../reducers';
 
 type VideoProps = {
-  src: Song | null,
+  media: Media,
+  // src: Song | null,
   auto: boolean
 }
 
@@ -11,37 +14,41 @@ const shortenType = (type: string) => {
   return type.replace('Opening', 'OP').replace('Ending', 'ED').replace('Insert Song', 'IN');
 }
 
+const sortByVideoFirst = (a: string, b: string) =>
+  a.includes('.webm') ? -1 : 1;
+
 const VideoPlayer = (props: VideoProps) => {
   // const [srcs, setSrcs] = useState(null);
   const [current, setCurrent] = useState<string | null>(null);
   const vidRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    // setSrcs(props.src.songLink);
-    if (props.src && props.src.songLink.length) {
-      setCurrent(props.src.songLink[0]);
+    if (props.media.currentSong && props.media.currentSong.songLink.length) {
+      setCurrent(props.media.currentSong.songLink[0]);
     }
-  }, [props.src]);
+  }, [props.media]);
 
+  console.log(props.media.currentSong?.songLink);
   return (
-    props.src
+    props.media.currentSong
       ?
       <div id='videoplayer'>
         <video
           controls
-          key={props.src._id}
+          key={props.media.currentSong._id}
           className={current && current.includes('.mp3') ? 'audio' : ''}
           ref={vidRef}
           autoPlay={props.auto}
         >
-          <source src={current ? current : ''}></source>
+          {props.media.currentSong.songLink.sort(sortByVideoFirst).map((link, i) =>
+            <source src={link} key={i}></source>)}
           No video
         </video>
         <div id="video-info">
-          <h2>{props.src.songName}</h2>
+          <h2>{props.media.currentSong.songName}</h2>
           <div id="video-sub-info">
-            <div>{props.src.songArtist}</div>
-            <div>{`${props.src.anime.english ? props.src.anime.english : props.src.anime.romaji} [${shortenType(props.src.songType)}]`}</div>
+            <div>{props.media.currentSong.songArtist}</div>
+            <div>{`${props.media.currentSong.anime.english ? props.media.currentSong.anime.english : props.media.currentSong.anime.romaji} [${shortenType(props.media.currentSong.songType)}]`}</div>
           </div>
         </div>
       </div>
@@ -51,4 +58,8 @@ const VideoPlayer = (props: VideoProps) => {
   )
 }
 
-export default VideoPlayer;
+const mapStateToProps = (state: AppState) => ({
+  media: state.media
+})
+
+export default connect(mapStateToProps, {})(VideoPlayer);

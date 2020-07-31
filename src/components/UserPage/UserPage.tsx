@@ -8,6 +8,9 @@ import Loader from 'react-loader-spinner';
 import Toggle from 'react-toggle';
 import sortSongs from './sortFunctions';
 import { Progress } from '../../types';
+import { setCurrentSong } from '../../actions/authActions';
+import { AppState } from '../../reducers';
+import { connect } from 'react-redux';
 import './UserPage.scss';
 import './react-toggle.scss';
 
@@ -17,6 +20,10 @@ const url = `https://serene-temple-88689.herokuapp.com`
 
 type MatchParams = {
   username: string
+}
+
+interface UserPageProps extends RouteComponentProps<MatchParams> {
+  setCurrentSong: Function
 }
 
 type LoadingState =
@@ -33,11 +40,10 @@ type SearchType =
   'miss' |
   'seen';
 
-const UserPage = ({ match }: RouteComponentProps<MatchParams>) => {
+const UserPage = (props: UserPageProps) => {
   const [numSongs, setNumSongs] = useState(0);
   const [user, setUser] = useState<string>('');
   const [progress, setProgress] = useState<Progress[]>([]);
-  const [currentDisplay, setCurrentDisplay] = useState<{ progress: Progress, auto: boolean } | null>(null);
   const [currentInfo, setCurrentInfo] = useState<Progress | null>(null);
   const [loadingState, setLoadingState] = useState<LoadingState>('unloaded');
   const [sortFun, setSortFun] = useState(1);
@@ -49,18 +55,19 @@ const UserPage = ({ match }: RouteComponentProps<MatchParams>) => {
   const [numLoaded, setNumLoaded] = useState(0);
   const [numShowing, setNumShowing] = useState(20);
   const [currentPage, setCurrentPage] = useState(1);
+  const [isAuto, setIsAuto] = useState(false);
 
   // ON PAGE LOAD
   useEffect(() => {
     const getUser = async () => {
-      const dbUser = (await (await fetch(`${url}/users?username=${match.params.username}`)).json()).users[0];
+      const dbUser = (await (await fetch(`${url}/users?username=${props.match.params.username}`)).json()).users[0];
       if (dbUser) {
         setUser(dbUser.displayName);
       }
     }
     const getProgress = async () => {
       // get first batch of STARTING_AMOUNT songs
-      const response = await fetch(`${url}/progress?username=${match.params.username}&method=username&limit=${STARTING_AMOUNT}`);
+      const response = await fetch(`${url}/progress?username=${props.match.params.username}&method=username&limit=${STARTING_AMOUNT}`);
       const firstBatch = (await response.json()).progress;
       if (!firstBatch || !firstBatch.paginatedResults.length) {
         return;
@@ -68,7 +75,9 @@ const UserPage = ({ match }: RouteComponentProps<MatchParams>) => {
       setProgress(firstBatch.paginatedResults);
       setNumSongs(firstBatch.totalCount[0].count);
       setNumLoaded(firstBatch.paginatedResults.length);
-      setCurrentDisplay({ progress: firstBatch.paginatedResults[0], auto: false });
+      // console.log(firstBatch.paginatedResults[0]);
+      props.setCurrentSong(firstBatch.paginatedResults[0].song[0])
+      // setCurrentDisplay({ progress: firstBatch.paginatedResults[0], auto: false });
       setCurrentInfo(firstBatch.paginatedResults[0]);
 
       // function to set all songs after loading them
@@ -82,7 +91,7 @@ const UserPage = ({ match }: RouteComponentProps<MatchParams>) => {
       const urls = [];
       for (let currentOffset = STARTING_AMOUNT; currentOffset < firstBatch.totalCount[0].count; currentOffset += OFFSET) {
         urls.push({
-          url: `${url}/progress?username=${match.params.username}&method=username&offset=${currentOffset}&limit=${OFFSET}`,
+          url: `${url}/progress?username=${props.match.params.username}&method=username&offset=${currentOffset}&limit=${OFFSET}`,
           offset: currentOffset
         })
       }
@@ -101,10 +110,11 @@ const UserPage = ({ match }: RouteComponentProps<MatchParams>) => {
       getUser();
       getProgress();
     }
-  }, [match, sortFun, loadingState, isReversed]);
+  }, [props.match, sortFun, loadingState, isReversed]);
 
   const handleCurrentDisplay = (i: number) => {
-    setCurrentDisplay({ progress: progress[i], auto: true });
+    props.setCurrentSong(progress[i].song[0]);
+    // setCurrentDisplay({ progress: progress[i], auto: true });
   }
 
   const handleCurrentInfo = (i: number) => {
@@ -233,8 +243,8 @@ const UserPage = ({ match }: RouteComponentProps<MatchParams>) => {
         <div id='right-fixed'>
           {/* <div id='nav-gap' /> */}
           <VideoPlayer
-            src={currentDisplay ? currentDisplay.progress.song[0] : null}
-            auto={currentDisplay ? currentDisplay.auto : false}
+            auto={isAuto}
+          // auto={currentDisplay ? currentDisplay.auto : false}
           />
           <div id='toolbox'>
             <div id='toolbox-content'>
@@ -297,4 +307,11 @@ const UserPage = ({ match }: RouteComponentProps<MatchParams>) => {
   }
 }
 
-export default withRouter(UserPage);
+const mapStateToProps = (state: AppState) => ({
+  media: state.media
+});
+
+export default connect(
+  mapStateToProps,
+  { setCurrentSong }
+)(withRouter(UserPage));
