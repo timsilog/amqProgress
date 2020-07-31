@@ -22,7 +22,8 @@
     "react-router-hash-link": "^1.2.2",
     "react-scripts": "3.4.1",
     "react-toggle": "^4.1.1",
-    "scss": "^0.2.4"
+    "scss": "^0.2.4",
+    "typescript": "^3.9.7"
   },
   "scripts": {
     "predeploy": "npm run build",
@@ -51,7 +52,6 @@
   "devDependencies": {
     "gh-pages": "^2.2.0",
     "source-map-loader": "^1.0.0",
-    "ts-loader": "^7.0.5",
-    "typescript": "^3.9.7"
+    "ts-loader": "^7.0.5"
   }
 }
