@@ -36,12 +36,13 @@
       color: white;
       background-color: rgba(0,0,0,0);
       border: none;
-      border-bottom: 1px solid gray;
+      border-bottom: 1px solid gray !important;
+      box-shadow: none !important;
       width: 100%;
       font-size: 1.2em;
       &:focus {
         outline: none;
-        border-bottom: 1px solid $amq-red;
+        border-bottom: 1px solid $amq-red !important;
       }
     }
     .error-text {

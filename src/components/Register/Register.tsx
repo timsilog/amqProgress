@@ -51,48 +51,40 @@ const Register = (props: RegisterProps) => {
         </div>
         <form noValidate onSubmit={onSubmit}>
           <div className='input-field'>
-            <label htmlFor='email'>Email</label>
-            <span className="error-text">{props.errors.email}</span>
+            <label htmlFor='email'>Email<span className="error-text">{props.errors.email}</span></label>
             <input
               onChange={(e: any) => setEmail(e.target.value)}
               value={email}
-              // error={props.errors.email}
               id='email'
               type='email'
               className={props.errors.email ? '' : 'invalid'}
             />
           </div>
           <div className='input-field'>
-            <label htmlFor='username'>Username</label>
-            <span className="error-text">{props.errors.username}</span>
+            <label htmlFor='username'>Username<span className="error-text">{props.errors.username}</span></label>
             <input
               onChange={(e: any) => setUsername(e.target.value)}
               value={username}
-              // error={props.errors.username}
               id='username'
               type='text'
               className={props.errors.username ? '' : 'invalid'}
             />
           </div>
           <div className='input-field'>
-            <label htmlFor='pw'>Password</label>
-            <span className="error-text">{props.errors.password}</span>
+            <label htmlFor='pw'>Password<span className="error-text">{props.errors.password}</span></label>
             <input
               onChange={(e: any) => setPw(e.target.value)}
               value={pw}
-              // error={props.errors.password}
               id='pw'
               type='password'
               className={props.errors.password ? '' : 'invalid'}
             />
           </div>
           <div className='input-field'>
-            <label htmlFor='pw2'>Confirm Password</label>
-            <span className="error-text">{props.errors.password2}</span>
+            <label htmlFor='pw2'>Confirm Password<span className="error-text">{props.errors.password2}</span></label>
             <input
               onChange={(e: any) => setPw2(e.target.value)}
               value={pw2}
-              // error={props.errors.password2}
               id='pw2'
               type='password'
               className={props.errors.password2 ? '' : 'invalid'}

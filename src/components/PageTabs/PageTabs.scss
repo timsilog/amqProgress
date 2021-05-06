@@ -10,7 +10,7 @@
   // grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
   height: 2em;
   .current {
-    background-color: $lighter-gray;
+    background-color: $darker-red;
   }
   button {
     width: 11.1%;
@@ -21,6 +21,7 @@
     justify-content: center;
     background-color: $base-gray;
     border: 1px solid $lighter-gray;
+    border-radius: 3px;
     &:hover {
       cursor: pointer;
       background-color: $lighter-gray;

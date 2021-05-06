@@ -9,8 +9,8 @@ import LoginPage from './components/Login/LoginPage';
 import './App.scss';
 import { Provider } from 'react-redux';
 import store from './store';
-import '../node_modules/materialize-css/dist/css/materialize.min.css'
-import '../node_modules/materialize-css/dist/js/materialize.min.css'
+import '../node_modules/materialize-css/dist/css/materialize.min.css';
+import '../node_modules/materialize-css/dist/js/materialize.min.js';
 
 import jwt_decode from "jwt-decode";
 import setAuthToken from "./utils/setAuthToken";
@@ -56,7 +56,7 @@ const App = () => {
           <Route path='/login' render={() => <LoginPage />} />
           <PrivateRoute exact path="/dashboard" component={Dashboard} />
         </Switch>
-        <MediaPlayer />
+        {/* <MediaPlayer /> */}
       </Router>
     </Provider>
   );

@@ -65,6 +65,7 @@ const PageTabs = (props: PageTabsProps) => {
   if (leftArrowFlag) {
     pageLinks[1] =
       <button
+        className='browser-default'
         key='left-arrow'
         onClick={(e: any) => {
           props.setCurrentPage(props.currentPage - 1)
@@ -74,6 +75,7 @@ const PageTabs = (props: PageTabsProps) => {
   if (rightArrowFlag) {
     pageLinks[NUMTABS - 2] =
       <button
+        className='browser-default'
         key='right-arrow'
         onClick={(e: any) => {
           props.setCurrentPage(props.currentPage + 1)

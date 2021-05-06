@@ -7,7 +7,7 @@ import { AppState } from '../../reducers';
 type VideoProps = {
   media: Media,
   // src: Song | null,
-  auto: boolean
+  auto?: boolean
 }
 
 const shortenType = (type: string) => {
@@ -45,7 +45,7 @@ const VideoPlayer = (props: VideoProps) => {
           No video
         </video>
         <div id="video-info">
-          <h2>{props.media.currentSong.songName}</h2>
+          <div id='song-title'>{props.media.currentSong.songName}</div>
           <div id="video-sub-info">
             <div>{props.media.currentSong.songArtist}</div>
             <div>{`${props.media.currentSong.anime.english ? props.media.currentSong.anime.english : props.media.currentSong.anime.romaji} [${shortenType(props.media.currentSong.songType)}]`}</div>

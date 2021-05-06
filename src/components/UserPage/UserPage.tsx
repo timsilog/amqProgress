@@ -55,19 +55,20 @@ const UserPage = (props: UserPageProps) => {
   const [numLoaded, setNumLoaded] = useState(0);
   const [numShowing, setNumShowing] = useState(20);
   const [currentPage, setCurrentPage] = useState(1);
-  const [isAuto, setIsAuto] = useState(false);
 
   // ON PAGE LOAD
+  const setCurrentSong = props.setCurrentSong;
+  const match = props.match;
   useEffect(() => {
     const getUser = async () => {
-      const dbUser = (await (await fetch(`${url}/users?username=${props.match.params.username}`)).json()).users[0];
+      const dbUser = (await (await fetch(`${url}/users?username=${match.params.username}`)).json()).users[0];
       if (dbUser) {
         setUser(dbUser.displayName);
       }
     }
     const getProgress = async () => {
       // get first batch of STARTING_AMOUNT songs
-      const response = await fetch(`${url}/progress?username=${props.match.params.username}&method=username&limit=${STARTING_AMOUNT}`);
+      const response = await fetch(`${url}/progress?username=${match.params.username}&method=username&limit=${STARTING_AMOUNT}`);
       const firstBatch = (await response.json()).progress;
       if (!firstBatch || !firstBatch.paginatedResults.length) {
         return;
@@ -76,7 +77,7 @@ const UserPage = (props: UserPageProps) => {
       setNumSongs(firstBatch.totalCount[0].count);
       setNumLoaded(firstBatch.paginatedResults.length);
       // console.log(firstBatch.paginatedResults[0]);
-      props.setCurrentSong(firstBatch.paginatedResults[0].song[0])
+      setCurrentSong(firstBatch.paginatedResults[0].song[0])
       // setCurrentDisplay({ progress: firstBatch.paginatedResults[0], auto: false });
       setCurrentInfo(firstBatch.paginatedResults[0]);
 
@@ -91,7 +92,7 @@ const UserPage = (props: UserPageProps) => {
       const urls = [];
       for (let currentOffset = STARTING_AMOUNT; currentOffset < firstBatch.totalCount[0].count; currentOffset += OFFSET) {
         urls.push({
-          url: `${url}/progress?username=${props.match.params.username}&method=username&offset=${currentOffset}&limit=${OFFSET}`,
+          url: `${url}/progress?username=${match.params.username}&method=username&offset=${currentOffset}&limit=${OFFSET}`,
           offset: currentOffset
         })
       }
@@ -110,7 +111,7 @@ const UserPage = (props: UserPageProps) => {
       getUser();
       getProgress();
     }
-  }, [props.match, sortFun, loadingState, isReversed]);
+  }, [match, setCurrentSong, sortFun, loadingState, isReversed]);
 
   const handleCurrentDisplay = (i: number) => {
     props.setCurrentSong(progress[i].song[0]);
@@ -181,10 +182,10 @@ const UserPage = (props: UserPageProps) => {
     }, [] as JSX.Element[]);
     return (
       <div id='user-page'>
-        <h1>{user}</h1>
-        <h3>Number of Songs Encountered: {numSongs}</h3>
+        <div id='user-title'>{user}</div>
+        <div className='subtitle'>Number of Songs Encountered: {numSongs}</div>
         <div id='search-container'>
-          <select
+          <select className='browser-default'
             onChange={handleSearchBy}>
             <option value='artist'>Search by Artist</option>
             <option value='title'>Search by Song Title</option>
@@ -194,16 +195,16 @@ const UserPage = (props: UserPageProps) => {
             <option value='miss'>Search by Misses</option>
             <option value='seen'>Search by Number Seen</option>
           </select>
-          <input type={
-            searchBy === 'hits' || searchBy === 'miss' || searchBy === 'seen' ? 'number' : 'text'} id='song-search'
+          <input
+            type={searchBy === 'hits' || searchBy === 'miss' || searchBy === 'seen' ? 'number' : 'text'}
+            id='song-search'
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)}
             value={search}
           />
         </div>
-        <br />
         <div id='items-per-page-container'>
           Items per page
-          <select
+          <select className={'browser-default'}
             onChange={handleItemsPerPage}>
             <option value={20}>20</option>
             <option value={50}>50</option>
@@ -243,7 +244,7 @@ const UserPage = (props: UserPageProps) => {
         <div id='right-fixed'>
           {/* <div id='nav-gap' /> */}
           <VideoPlayer
-            auto={isAuto}
+            auto={false}// FIX THIS//////////////////////////////////////////////////
           // auto={currentDisplay ? currentDisplay.auto : false}
           />
           <div id='toolbox'>

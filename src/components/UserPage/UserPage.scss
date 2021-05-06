@@ -5,21 +5,45 @@
   flex-direction: column;
   width: 60%;
   margin-left: 2%;
-  h1 {
-    margin-bottom: 0;
+  select {
+    font-size: .8em;
+    width: auto;
+    height: auto;
+    padding: 0;
+    &:focus {
+      outline: none;
+    }
+  }
+  #user-title {
+    margin-top: 5%;
+    font-size: 3em;
     font-weight: 400;
   }
-  h3 {
+  .subtitle {
     font-weight: 300;
+    margin-bottom: 2%;
   }
   #search-container {
     display: flex;
   }
   #song-search {
+    margin-left: 1%;
+    margin-right: 1%;
+    margin-bottom: 0;
     height: 1.5em;
-    width: 100%;
+    width: 90%;
+    color: white;
+    font-size: 1em;
+    box-shadow: none;
+    &:focus {
+      border-bottom: solid 1px $amq-red !important;
+      box-shadow: none !important;
+    }
   }
   #items-per-page-container {
+    margin-top: 2%;
+    margin-bottom: 1%;
+    display: flex;
     font-size: .8em;
     select {
       margin-left: 1%;
@@ -127,8 +151,14 @@
           column-gap: 5%;
           row-gap: 5%;
           label {
+            color: white; // override materialize
             display: flex;
             align-items: center;
+          }
+          input[type='radio'] { // OVERRIDE MATERIALIZE
+            opacity: 1 !important;
+            position: static !important;
+            margin-right: 2%;
           }
         }
         #filter-header {

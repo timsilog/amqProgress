@@ -46,36 +46,26 @@ const LoginPage = (props: LoginProps) => {
     <div className='container'>
       <div className='form-container'>
         {props.location.state && props.location.state.justRegistered
-          ? <div className='blue'>Account successfully created!</div> : ''}
+          ? <div className='blue-text'>Account successfully created!</div> : ''}
         <div className='header' >
           <div className='title'><b>Login</b></div>
         </div>
         <form noValidate onSubmit={onSubmit}>
           <div className='input-field'>
-            <label htmlFor='emailOrUsername'>Email or Username</label>
-            <span className="error-text">
-              {props.errors.emailOrUsername}
-              {props.errors.accountNotFound}
-            </span>
+            <label htmlFor='emailOrUsername'>Email or Username<span className="error-text">{props.errors.emailOrUsername}{props.errors.accountNotFound}</span></label>
             <input
               onChange={(e: any) => setEmailOrUsername(e.target.value)}
               value={emailOrUsername}
-              // error={props.errors.email}
               id='emailOrUsername'
-              type='username'
+              type='text'
               className={props.errors.emailOrUsername || props.errors.accountNotFound ? 'invalid' : ''}
             />
           </div>
           <div className='input-field'>
-            <label htmlFor='pw'>Password</label>
-            <span className="error-text">
-              {props.errors.password}
-              {props.errors.passwordIncorrect}
-            </span>
+            <label htmlFor='pw'>Password<span className="error-text">{props.errors.password}{props.errors.passwordIncorrect}</span></label>
             <input
               onChange={(e: any) => setPw(e.target.value)}
               value={pw}
-              // error={props.errors.password}
               id='pw'
               type='password'
               className={props.errors.password || props.errors.passwordIncorrect ? 'invalid' : ''}

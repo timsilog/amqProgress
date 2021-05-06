@@ -8,6 +8,7 @@ import { Media } from '../types';
 
 const initialState: Media = {
   currentSong: null,
+  isAuto: false,
 }
 
 export default (state = initialState, action: ActionType) => {
